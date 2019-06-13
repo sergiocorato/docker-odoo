@@ -67,7 +67,7 @@ WORKDIR /var/lib/odoo
 
 COPY odoo.conf /etc/odoo
 COPY run.sh /run.sh
-COPY pip.conf /var/lib/odoo/
+COPY pip.conf /var/lib/odoo/.pip/
 
 EXPOSE 8069 8071 8072
 
