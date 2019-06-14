@@ -61,6 +61,7 @@ RUN pip install -r /opt/odoo/requirements.txt
 RUN pip install -r /opt/odoo/doc/requirements.txt
 RUN pip install /opt/odoo
 RUN pip install Unidecode
+RUN chown -R ${ODOO_UID}:${ODOO_GID} /var/lib/odoo/setup/
 
 USER odoo
 WORKDIR /var/lib/odoo
