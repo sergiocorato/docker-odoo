@@ -61,13 +61,14 @@ RUN pip install -r /opt/odoo/requirements.txt
 RUN pip install -r /opt/odoo/doc/requirements.txt
 RUN pip install /opt/odoo
 RUN pip install Unidecode
-RUN mkdir /var/lib/odoo/setup/
-RUN chown -R ${ODOO_UID}:${ODOO_GID} /var/lib/odoo/setup/
 
 USER odoo
 WORKDIR /var/lib/odoo
+RUN mkdir /var/lib/odoo/setup/
 
 COPY odoo.conf /etc/odoo
+COPY requirements.txt /var/lib/odoo/setup
+COPY pip.conf /var/lib/odoo/.pip
 COPY run.sh /run.sh
 
 EXPOSE 8069 8071 8072
