@@ -1,84 +1,100 @@
-FROM debian:stretch
+FROM debian:wheezy
+MAINTAINER Sergio Corato <sergiocorato@gmail.com>
 
-ARG ODOO_UID=105
-ARG ODOO_GID=109
+ENV DEBIAN_FRONTEND noninteractive
+ENV PYTHONIOENCODING utf-8
+RUN cp /etc/apt/sources.list /etc/apt/sources.list.back
+RUN sed -i 's/deb http:\/\/security.debian.org.*/#NO/g' /etc/apt/sources.list
+RUN sed -i 's/deb-src http:\/\/security.debian.org.*/#NO/g' /etc/apt/sources.list
+RUN sed -i 's/deb http:\/\/deb.debian.org.*/#NO/g' /etc/apt/sources.list
+RUN sed -i 's/deb-src http:\/\/deb.debian.org.*/#NO/g' /etc/apt/sources.list
+RUN apt-get update
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/
+RUN echo "deb http://archive.debian.org/debian wheezy-backports main" >> \
+ /etc/apt/sources.list
+RUN echo "deb-src http://archive.debian.org/debian wheezy-backports main" >> \
+ /etc/apt/sources.list
+RUN echo "deb http://archive.debian.org/debian-security wheezy updates/main" >> \
+ /etc/apt/sources.list
+RUN echo "deb-src http://archive.debian.org/debian-security wheezy updates/main" >> \
+ /etc/apt/sources.list
+RUN echo "deb http://archive.debian.org/debian wheezy main" >> \
+ /etc/apt/sources.list
+RUN echo "deb-src http://archive.debian.org/debian wheezy main" >> \
+ /etc/apt/sources.list
+RUN apt-get update -y && apt-get upgrade -y \
+    && apt-get install --allow-unauthenticated -y \
+python-dateutil python-feedparser python-gdata python-ldap \
+python-libxslt1 python-lxml python-mako python-openid python-psycopg2 \
+python-pybabel python-pychart python-pydot python-pyparsing python-reportlab \
+python-simplejson python-tz python-vatnumber python-vobject python-webdav \
+python-werkzeug python-xlwt python-yaml python-zsi \
+python-unittest2 python-mock python-docutils python-jinja2 \
+python-psutil python-setuptools \
+git vim wget openssh-client fontconfig \
+xfonts-base xfonts-75dpi \
+python-dev psmisc python-genshi python-cairo \
+    locate unzip locales
+RUN echo "it_IT.UTF-8 UTF-8" >> /etc/locale.gen && \
+    dpkg-reconfigure --frontend=noninteractive locales && \
+    update-locale LANG=it_IT.UTF-8
+ENV LANG it_IT.UTF-8
+ENV LANGUAGE it
+RUN cd /tmp && wget -O wkhtmltox-0.12.2.1_linux-wheezy-amd64.deb \
+    https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.2.1/\
+wkhtmltox-0.12.2.1_linux-wheezy-amd64.deb \
+    && dpkg -i wkhtmltox-0.12.2.1_linux-wheezy-amd64.deb \
+    && cp /usr/local/bin/wkhtmltopdf /usr/bin \
+    && cp /usr/local/bin/wkhtmltoimage /usr/bin
 
-ENV ODOO_DATADIR=/var/lib/odoo
-ENV ODOO_CONF=/var/lib/odoo/odoo.conf
+RUN wget https://bootstrap.pypa.io/get-pip.py && python get-pip.py
 
-ENV REQ_FILE=/var/lib/odoo/requirements.txt
-ENV ADMIN_PASSWD=Db4dm1nSup3rS3cr3tP4ssw0rD
-ENV POSTGRES_HOST=db
-ENV POSTGRES_USER=odoo
-ENV POSTGRES_PASSWORD=Us3rP4ssw0rD
+RUN pip install mock PyPDF2 python-telegram-bot codicefiscale \
+    MarkupSafe==0.23 Pillow==1.7.7 pyyaml==3.10 unidecode==0.04.13 \
+    pyxb==1.2.5 odfpy==0.9.6 pybarcode bs4 phonenumbers
+RUN apt-get install -y libzbar0
+RUN pip install pyzbar pyzbar[scripts] qrcode \
+    git+https://github.com/ojii/pymaging.git#egg=pymaging \
+    git+https://github.com/ojii/pymaging-png.git#egg=pymaging-png
 
-RUN apt update && apt -y upgrade && apt -y install \
-    build-essential \
-    bzip2 \
-    curl \
-    geoip-database \
-    git \
-    gnupg \
-    libgeoip1 \
-    libxml2-dev \
-    libxslt-dev \
-    libzip-dev \
-    libldap2-dev \
-    libsasl2-dev \
-    locales \
-    nano \
-    poppler-utils \
-    procps \
-    python \
-    python-pip \
-    python-setuptools \
-    rsync \
-    unzip \
-    vim \
-    wget
+# Expose openerp services
+EXPOSE 8069 8071
 
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
-RUN apt -y install nodejs
-RUN npm install -g less less-plugin-clean-css
+# explicitly set user/group IDs
+RUN groupadd -r openerp --gid=1000 && useradd -r -g openerp --uid=1000 openerp
 
-RUN curl -L https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.stretch_amd64.deb -o /tmp/wkhtmltopdf.deb
-RUN apt -y install /tmp/wkhtmltopdf.deb
+# Set the default config file
+COPY openerp.conf /opt/openerp/
+COPY entrypoint.sh /opt/openerp/
+ENV OPENERP_SERVER /opt/openerp/openerp.conf
 
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main" > /etc/apt/sources.list.d/pgdg.list
-RUN curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
-RUN apt update && apt -y upgrade
-RUN apt -y install postgresql-client-11
+# Appropriate directory creation and right changes
+RUN mkdir /var/lib/openerp \
+    && chown openerp:openerp /var/lib/openerp \
+    && chown -R openerp:openerp /opt\
+    && chmod ugo+x /opt/openerp/entrypoint.sh \
+    && chown openerp:openerp /opt/openerp/entrypoint.sh
 
-RUN apt clean
-RUN rm -rf /var/lib/apt/lists/*
+RUN apt-get update
+RUN apt-get install -y --force-yes net-tools telnet supervisor procps
+RUN apt-get upgrade -y
+RUN apt-get -y --force-yes -t wheezy-backports install \
+    libreoffice '^libreoffice-.*-it$'
+RUN rm /usr/bin/soffice && cd /usr/bin && ln -s \
+    ../lib/libreoffice/program/soffice.bin ./soffice
+RUN sed -i 's/Logo=1/Logo=0/g' /etc/libreoffice/sofficerc && \
+    sed -i 's/NativeProgress=false/NativeProgress=true/g' /etc/libreoffice/sofficerc
+RUN cd /tmp && git clone https://github.com/sergiocorato/aeroolib \
+    && cd /tmp/aeroolib/aeroolib && python ./setup.py  install
+RUN cd /opt/openerp/ && \
+    git clone https://github.com/efatto/server.git server --single-branch -b master && \
+    git clone https://github.com/efatto/addons.git addons --single-branch -b master && \
+    git clone https://github.com/efatto/web.git web --single-branch -b master && \
+    git clone https://github.com/efatto/lp.git lp --single-branch -b master && \
+    git clone https://github.com/efatto/l10n-italy.git l10n-italy --single-branch -b 7.0_imp_sr_fatturapa
 
-RUN echo "it_IT.UTF-8 UTF-8" > /etc/locale.gen
-RUN locale-gen
-ENV LANG=it_IT.UTF-8
+ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-RUN groupadd -g ${ODOO_GID} odoo
-RUN useradd -m -d /var/lib/odoo -s /bin/bash -u ${ODOO_UID} -g ${ODOO_GID} odoo
-RUN mkdir -p /etc/odoo
-RUN chown -R odoo:odoo /etc/odoo /opt
+VOLUME ["/tmp", "/var/lib/openerp"]
 
-USER odoo
-RUN git clone https://github.com/OCA/OCB.git --depth 1 --branch 10.0 --single-branch /opt/odoo
-
-USER root
-RUN pip install --upgrade pip
-RUN pip install -r /opt/odoo/requirements.txt
-RUN pip install -r /opt/odoo/doc/requirements.txt
-RUN pip install /opt/odoo
-RUN pip install Unidecode
-
-USER odoo
-WORKDIR /var/lib/odoo
-
-COPY odoo.conf /etc/odoo
-COPY run.sh /run.sh
-
-EXPOSE 8069 8071 8072
-
-VOLUME /var/lib/odoo
-
-CMD /bin/bash /run.sh
+ENTRYPOINT ["/usr/bin/supervisord"]
