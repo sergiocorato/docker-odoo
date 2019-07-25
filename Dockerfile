@@ -76,7 +76,6 @@ COPY openerp.conf /opt/openerp/
 COPY entrypoint.sh /opt/openerp/
 
 # Appropriate directory creation and right changes
-RUN mkdir /opt/openerp
 RUN chown openerp:openerp /opt/openerp
 RUN chmod ugo+x /opt/openerp/entrypoint.sh
 
