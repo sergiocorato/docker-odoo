@@ -76,11 +76,8 @@ COPY openerp.conf /var/lib/openerp/
 COPY entrypoint.sh /var/lib/openerp/
 
 # Appropriate directory creation and right changes
-RUN mkdir /var/lib/openerp \
-    && chown openerp:openerp /var/lib/openerp \
-    && chown -R openerp:openerp /opt\
-    && chmod ugo+x /opt/openerp/entrypoint.sh \
-    && chown openerp:openerp /opt/openerp/entrypoint.sh
+RUN chown openerp:openerp /var/lib/openerp
+RUN chmod ugo+x /var/lib/openerp/entrypoint.sh
 
 RUN apt-get update
 RUN apt-get install -y --force-yes net-tools telnet supervisor procps
