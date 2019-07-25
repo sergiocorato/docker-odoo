@@ -76,6 +76,8 @@ COPY openerp.conf /var/lib/openerp/
 COPY entrypoint.sh /var/lib/openerp/
 
 # Appropriate directory creation and right changes
+RUN mkdir /opt/openerp
+RUN chown openerp:openerp /opt/openerp
 RUN chown openerp:openerp /var/lib/openerp
 RUN chmod ugo+x /var/lib/openerp/entrypoint.sh
 
