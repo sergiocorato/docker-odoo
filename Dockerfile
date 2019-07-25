@@ -5,6 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV PYTHONIOENCODING utf-8
 ENV ODOO_DATADIR=/var/lib/openerp
 ENV ODOO_CONF=/var/lib/openerp/openerp.conf
+ENV ADDONS_PATH=/opt/openerp/server/openerp/addons,/opt/openerp/addons,/opt/openerp/web/addons,/opt/openerp/lp/aeroo,/opt/openerp/l10n-italy
 ENV ADMIN_PASSWD=Db4dm1nSup3rS3cr3tP4ssw0rD
 ENV POSTGRES_HOST=db
 ENV POSTGRES_USER=odoo
