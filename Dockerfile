@@ -73,12 +73,12 @@ RUN mkdir -p /etc/odoo
 RUN chown -R openerp:openerp /etc/odoo /opt
 
 USER openerp
-COPY openerp.conf /opt/openerp/
-COPY entrypoint.sh /opt/openerp/
+COPY openerp.conf /var/lib/odoo/
+COPY entrypoint.sh /var/lib/odoo/
 
 USER root
 # Appropriate directory creation and right changes
-RUN chmod ugo+x /opt/openerp/entrypoint.sh
+RUN chmod ugo+x /var/lib/odoo/entrypoint.sh
 
 RUN apt-get update
 RUN apt-get install -y --force-yes net-tools telnet supervisor procps
