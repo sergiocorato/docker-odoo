@@ -100,13 +100,10 @@ RUN cd /opt/openerp/ && \
 
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-USER openerp
-WORKDIR /opt/openerp
-
 COPY openerp.conf /etc/odoo
 
 EXPOSE 8069 8071
 
 VOLUME /opt/openerp
 
-ENTRYPOINT /usr/bin/supervisord
+ENTRYPOINT ["/usr/bin/supervisord"]
