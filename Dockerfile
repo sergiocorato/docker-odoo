@@ -3,6 +3,13 @@ MAINTAINER Sergio Corato <sergiocorato@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV PYTHONIOENCODING utf-8
+ENV ODOO_DATADIR=/var/lib/openerp
+ENV ODOO_CONF=/var/lib/openerp/openerp.conf
+ENV ADMIN_PASSWD=Db4dm1nSup3rS3cr3tP4ssw0rD
+ENV POSTGRES_HOST=db
+ENV POSTGRES_USER=odoo
+ENV POSTGRES_PASSWORD=Us3rP4ssw0rD
+
 RUN cp /etc/apt/sources.list /etc/apt/sources.list.back
 RUN sed -i 's/deb http:\/\/security.debian.org.*/#NO/g' /etc/apt/sources.list
 RUN sed -i 's/deb-src http:\/\/security.debian.org.*/#NO/g' /etc/apt/sources.list
@@ -64,9 +71,8 @@ EXPOSE 8069 8071
 RUN groupadd -r openerp --gid=1000 && useradd -r -g openerp --uid=1000 openerp
 
 # Set the default config file
-COPY openerp.conf /opt/openerp/
-COPY entrypoint.sh /opt/openerp/
-ENV OPENERP_SERVER /opt/openerp/openerp.conf
+COPY openerp.conf /var/lib/openerp/
+COPY entrypoint.sh /var/lib/openerp/
 
 # Appropriate directory creation and right changes
 RUN mkdir /var/lib/openerp \
