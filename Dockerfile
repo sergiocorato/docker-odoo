@@ -3,8 +3,8 @@ MAINTAINER Sergio Corato <sergiocorato@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV PYTHONIOENCODING utf-8
-ENV ODOO_DATADIR=/var/lib/openerp
-ENV ODOO_CONF=/var/lib/openerp/openerp.conf
+ENV ODOO_DATADIR=/opt/openerp
+ENV ODOO_CONF=/opt/openerp/openerp.conf
 ENV ADDONS_PATH=/opt/openerp/server/openerp/addons,/opt/openerp/addons,/opt/openerp/web/addons,/opt/openerp/lp/aeroo,/opt/openerp/l10n-italy
 ENV ADMIN_PASSWD=Db4dm1nSup3rS3cr3tP4ssw0rD
 ENV POSTGRES_HOST=db
@@ -72,14 +72,13 @@ EXPOSE 8069 8071
 RUN groupadd -r openerp --gid=1000 && useradd -r -g openerp --uid=1000 openerp
 
 # Set the default config file
-COPY openerp.conf /var/lib/openerp/
-COPY entrypoint.sh /var/lib/openerp/
+COPY openerp.conf /opt/openerp/
+COPY entrypoint.sh /opt/openerp/
 
 # Appropriate directory creation and right changes
 RUN mkdir /opt/openerp
 RUN chown openerp:openerp /opt/openerp
-RUN chown openerp:openerp /var/lib/openerp
-RUN chmod ugo+x /var/lib/openerp/entrypoint.sh
+RUN chmod ugo+x /opt/openerp/entrypoint.sh
 
 RUN apt-get update
 RUN apt-get install -y --force-yes net-tools telnet supervisor procps
@@ -101,6 +100,9 @@ RUN cd /opt/openerp/ && \
 
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-VOLUME ["/tmp", "/var/lib/openerp"]
+USER openerp
+WORKDIR /opt/openerp
+
+VOLUME /opt/openerp
 
 ENTRYPOINT ["/usr/bin/supervisord"]
