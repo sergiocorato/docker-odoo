@@ -82,6 +82,7 @@ RUN chmod ugo+x /opt/openerp/entrypoint.sh
 
 RUN apt-get update
 RUN apt-get install -y --force-yes net-tools telnet supervisor procps
+RUN pip install supervisor --ignore-installed --upgrade
 RUN apt-get upgrade -y
 RUN apt-get -y --force-yes -t wheezy-backports install \
     libreoffice '^libreoffice-.*-it$'
