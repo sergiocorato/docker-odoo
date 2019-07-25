@@ -3,8 +3,8 @@ MAINTAINER Sergio Corato <sergiocorato@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV PYTHONIOENCODING utf-8
-ENV ODOO_DATADIR=/opt/openerp
-ENV ODOO_CONF=/opt/openerp/openerp.conf
+ENV ODOO_DATADIR=/var/lib/odoo
+ENV ODOO_CONF=/var/lib/odoo/openerp.conf
 ENV ADDONS_PATH=/opt/openerp/server/openerp/addons,/opt/openerp/addons,/opt/openerp/web/addons,/opt/openerp/lp/aeroo,/opt/openerp/l10n-italy
 ENV ADMIN_PASSWD=Db4dm1nSup3rS3cr3tP4ssw0rD
 ENV POSTGRES_HOST=db
@@ -65,18 +65,19 @@ RUN pip install pyzbar pyzbar[scripts] qrcode \
     git+https://github.com/ojii/pymaging.git#egg=pymaging \
     git+https://github.com/ojii/pymaging-png.git#egg=pymaging-png
 
-# Expose openerp services
-EXPOSE 8069 8071
-
 # explicitly set user/group IDs
 RUN groupadd -r openerp --gid=1000 && useradd -r -g openerp --uid=1000 openerp
 
 # Set the default config file
+RUN mkdir -p /etc/odoo
+RUN chown -R openerp:openerp /etc/odoo /opt
+
+USER openerp
 COPY openerp.conf /opt/openerp/
 COPY entrypoint.sh /opt/openerp/
 
+USER root
 # Appropriate directory creation and right changes
-RUN chown openerp:openerp /opt/openerp
 RUN chmod ugo+x /opt/openerp/entrypoint.sh
 
 RUN apt-get update
@@ -100,8 +101,12 @@ RUN cd /opt/openerp/ && \
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 USER openerp
-WORKDIR /opt/openerp
+WORKDIR /var/lib/odoo
 
-VOLUME /opt/openerp
+COPY openerp.conf /etc/odoo
 
-ENTRYPOINT ["/usr/bin/supervisord"]
+EXPOSE 8069 8071
+
+VOLUME /var/lib/odoo
+
+ENTRYPOINT /usr/bin/supervisord
