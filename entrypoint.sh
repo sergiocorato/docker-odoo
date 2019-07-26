@@ -2,8 +2,6 @@
 
 set -e
 
-sed -i "/^admin_passwd/c\admin_passwd=$ADMIN_PASSWD" "$ODOO_CONF"
-
 ln -s /etc/supervisor/supervisord.conf /etc/supervisord.conf
 
 if [ -z "$*" ]; then

@@ -3,13 +3,6 @@ MAINTAINER Sergio Corato <sergiocorato@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV PYTHONIOENCODING utf-8
-ENV ODOO_DATADIR=/opt/openerp
-ENV ODOO_CONF=/opt/openerp/openerp.conf
-ENV ADDONS_PATH=/opt/openerp/server/openerp/addons,/opt/openerp/addons,/opt/openerp/web/addons,/opt/openerp/lp/aeroo,/opt/openerp/l10n-italy
-ENV ADMIN_PASSWD=Db4dm1nSup3rS3cr3tP4ssw0rD
-ENV POSTGRES_HOST=db
-ENV POSTGRES_USER=odoo
-ENV POSTGRES_PASSWORD=Us3rP4ssw0rD
 
 RUN cp /etc/apt/sources.list /etc/apt/sources.list.back
 RUN sed -i 's/deb http:\/\/security.debian.org.*/#NO/g' /etc/apt/sources.list
@@ -69,16 +62,13 @@ RUN pip install pyzbar pyzbar[scripts] qrcode \
 RUN groupadd -r openerp --gid=1000 && useradd -r -g openerp --uid=1000 openerp
 
 # Set the default config file
-RUN mkdir -p /etc/odoo
-RUN chown -R openerp:openerp /etc/odoo /opt
+RUN mkdir -p /opt/openerp
+RUN mkdir -p /var/lib/odoo
+RUN chown -R openerp:openerp /opt /var/lib/odoo
 
-USER openerp
-COPY openerp.conf /opt/openerp/
-COPY entrypoint.sh /opt/openerp/
-
-USER root
 # Appropriate directory creation and right changes
-RUN chmod ugo+x /opt/openerp/entrypoint.sh
+ADD entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 RUN apt-get update
 RUN apt-get install -y --force-yes net-tools telnet supervisor procps
@@ -99,12 +89,13 @@ RUN cd /opt/openerp/ && \
     git clone https://github.com/efatto/lp.git lp --single-branch -b master && \
     git clone https://github.com/efatto/l10n-italy.git l10n-italy --single-branch -b 7.0_imp_sr_fatturapa
 
+RUN mkdir -p /etc/supervisor/conf.d
+RUN mkdir -p /var/log/supervisor
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-COPY openerp.conf /etc/odoo
-
+COPY openerp.conf /var/lib/odoo/
 EXPOSE 8069 8071
 
-VOLUME /opt/openerp
+VOLUME /var/lib/odoo
 
-ENTRYPOINT ["/usr/bin/supervisord"]
+ENTRYPOINT ["/entrypoint.sh"]
