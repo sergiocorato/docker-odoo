@@ -1,6 +1,9 @@
 FROM debian:wheezy
 MAINTAINER Sergio Corato <sergiocorato@gmail.com>
 
+ARG ODOO_UID=105
+ARG ODOO_GID=109
+
 ENV DEBIAN_FRONTEND noninteractive
 ENV PYTHONIOENCODING utf-8
 
@@ -53,18 +56,16 @@ RUN wget https://bootstrap.pypa.io/get-pip.py && python get-pip.py
 RUN pip install mock PyPDF2 python-telegram-bot codicefiscale \
     MarkupSafe==0.23 Pillow==1.7.7 pyyaml==3.10 unidecode==0.04.13 \
     pyxb==1.2.5 odfpy==0.9.6 pybarcode bs4 phonenumbers
+
 RUN apt-get install -y libzbar0
 RUN pip install pyzbar pyzbar[scripts] qrcode \
     git+https://github.com/ojii/pymaging.git#egg=pymaging \
     git+https://github.com/ojii/pymaging-png.git#egg=pymaging-png
 
-# explicitly set user/group IDs
-RUN groupadd -r openerp --gid=1000 && useradd -r -g openerp --uid=1000 openerp
-
-# Set the default config file
+RUN groupadd -g ${ODOO_GID} openerp
+RUN useradd -m -d /var/lib/odoo -s /bin/bash -u ${ODOO_UID} -g ${ODOO_GID} openerp
 RUN mkdir -p /opt/openerp
-RUN mkdir -p /var/lib/odoo
-RUN chown -R openerp:openerp /opt /var/lib/odoo
+RUN chown -R openerp:openerp /opt
 
 # Appropriate directory creation and right changes
 ADD entrypoint.sh /entrypoint.sh
