@@ -38,7 +38,7 @@ python-psutil python-setuptools \
 git vim wget openssh-client fontconfig \
 xfonts-base xfonts-75dpi \
 python-dev psmisc python-genshi python-cairo \
-    locate unzip locales
+    locate unzip locales gdb
 RUN echo "it_IT.UTF-8 UTF-8" >> /etc/locale.gen && \
     dpkg-reconfigure --frontend=noninteractive locales && \
     update-locale LANG=it_IT.UTF-8
