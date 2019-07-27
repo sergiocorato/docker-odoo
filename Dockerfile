@@ -38,7 +38,7 @@ python-psutil python-setuptools \
 git vim wget openssh-client fontconfig \
 xfonts-base xfonts-75dpi \
 python-dev psmisc python-genshi python-cairo \
-    locate unzip locales gdb
+    locate unzip locales
 RUN echo "it_IT.UTF-8 UTF-8" >> /etc/locale.gen && \
     dpkg-reconfigure --frontend=noninteractive locales && \
     update-locale LANG=it_IT.UTF-8
@@ -68,15 +68,11 @@ RUN useradd -m -d /var/lib/odoo -s /bin/bash -u ${ODOO_UID} -g ${ODOO_GID} opene
 RUN mkdir -p /opt/openerp
 RUN chown -R openerp:openerp /opt
 
-# Appropriate directory creation and right changes
-ADD entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
 RUN apt-get update
 RUN apt-get install -y --force-yes net-tools telnet supervisor procps
 RUN pip install supervisor --ignore-installed --upgrade
 RUN apt-get upgrade -y
-RUN apt-get -y --force-yes -t wheezy-backports install \
+RUN apt-get -y --force-yes --no-install-recommends -t wheezy-backports install \
     libreoffice '^libreoffice-.*-it$'
 RUN rm /usr/bin/soffice && cd /usr/bin && ln -s \
     ../lib/libreoffice/program/soffice.bin ./soffice
@@ -100,4 +96,4 @@ EXPOSE 8069 8071
 
 VOLUME /var/lib/odoo
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/usr/bin/supervisord"]
