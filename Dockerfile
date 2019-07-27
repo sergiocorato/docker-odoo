@@ -56,7 +56,7 @@ RUN wget https://bootstrap.pypa.io/get-pip.py && python get-pip.py
 RUN pip install --ignore-installed --upgrade mock PyPDF2 python-telegram-bot \
     codicefiscale \
     MarkupSafe==0.23 Pillow==5.2.0 pyyaml==3.10 unidecode==0.04.13 \
-    pyxb==1.2.5 odfpy==0.9.6 pybarcode bs4 phonenumbers requests
+    pyxb==1.2.5 odfpy==0.9.6 pybarcode bs4 phonenumbers requests xlrd
 
 RUN apt-get install -y libzbar0
 RUN pip install pyzbar pyzbar[scripts] qrcode \
