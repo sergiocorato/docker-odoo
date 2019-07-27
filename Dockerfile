@@ -96,4 +96,4 @@ EXPOSE 8069 8071
 
 VOLUME /var/lib/odoo
 
-ENTRYPOINT ["/usr/bin/supervisord"]
+ENTRYPOINT ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
