@@ -89,7 +89,7 @@ RUN cd /opt/openerp/ && \
 
 RUN mkdir -p /etc/supervisor/conf.d
 RUN mkdir -p /var/log/supervisor
-ADD supervisord.conf /etc/supervisord.conf
+COPY supervisord.conf /etc/supervisord.conf
 
 COPY openerp.conf /var/lib/odoo/
 EXPOSE 8069 8071
