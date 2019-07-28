@@ -91,7 +91,7 @@ RUN mkdir -p /etc/supervisor/conf.d
 RUN mkdir -p /var/log/supervisor
 COPY supervisord.conf /etc/supervisord.conf
 
-COPY openerp.conf /var/lib/odoo/
+COPY odoo.conf /var/lib/odoo/
 EXPOSE 8069 8071
 
 VOLUME /var/lib/odoo
