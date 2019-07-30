@@ -70,7 +70,7 @@ RUN chown -R openerp:openerp /opt
 
 RUN apt-get update
 RUN apt-get install -y --force-yes net-tools telnet supervisor procps
-RUN pip install supervisor --ignore-installed --upgrade
+RUN pip install supervisor supervisor-stdout --ignore-installed --upgrade
 RUN apt-get upgrade -y
 RUN apt-get -y --force-yes --no-install-recommends -t wheezy-backports install \
     libreoffice '^libreoffice-.*-it$'
