@@ -8,12 +8,12 @@ RUN echo "deb http://http.debian.net/debian stretch-backports main" >> \
 RUN apt-get update -y
 RUN apt-get -y install libreoffice
 RUN apt-get install -y git python3-uno python3-pip supervisor \
-    openjdk-8-jre openjdk-8-jre-headless tcpd uno-libs3 ure
+    openjdk-8-jre openjdk-8-jre-headless tcpd uno-libs3 ure python-pip
 # ? xvfb
 RUN apt-get clean
 
 RUN pip3 install jsonrpc2 daemonize
-
+RUN pip install supervisor supervisor-stdout --ignore-installed --upgrade
 RUN git clone https://github.com/sergiocorato/aeroo_docs.git /opt/aeroo_docs
 
 EXPOSE 8989
