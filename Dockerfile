@@ -87,11 +87,11 @@ RUN cd /opt/openerp/ && \
     git clone https://github.com/efatto/lp.git lp --single-branch -b master && \
     git clone https://github.com/efatto/l10n-italy.git l10n-italy --single-branch -b 7.0_imp_sr_fatturapa
 
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY supervisord.conf /var/lib/odoo/
 
 COPY odoo.conf /var/lib/odoo/
 EXPOSE 8069 8071
 
 VOLUME /var/lib/odoo
 
-ENTRYPOINT ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+ENTRYPOINT ["/usr/bin/supervisord", "-c", "/var/lib/odoo/supervisord.conf"]
