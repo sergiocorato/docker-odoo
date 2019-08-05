@@ -105,21 +105,21 @@ USER root
 RUN pip install --upgrade pip
 RUN pip install -r https://raw.githubusercontent.com/odoo/odoo/8.0/requirements.txt
 RUN pip install \
-    asn1crypto
-    codicefiscale
-    geojson
-    googlemaps
-    num2words
-    openupgradelib
-    phonenumbers
-    pstats_print2list
-    PyPDF2
-    pysftp
+    asn1crypto \
+    codicefiscale \
+    geojson \
+    googlemaps \
+    num2words \
+    openupgradelib \
+    phonenumbers \
+    pstats_print2list \
+    PyPDF2 \
+    pysftp \
     pyxb==1.2.5 \
-    Shapely
-    unicodecsv
-    unidecode
-    xlrd
+    Shapely \
+    unicodecsv \
+    unidecode \
+    xlrd \
     xlsxwriter
 
 USER odoo
