@@ -1,7 +1,7 @@
 FROM debian:stretch
 
-ARG ODOO_UID=1000
-ARG ODOO_GID=1000
+ARG ODOO_UID=105
+ARG ODOO_GID=109
 
 ENV ODOO_DATADIR=/var/lib/odoo
 ENV ODOO_CONF=/var/lib/odoo/odoo.conf
@@ -13,19 +13,12 @@ ENV POSTGRES_USER=odoo
 ENV POSTGRES_PASSWORD=Us3rP4ssw0rD
 
 RUN apt update && apt -y upgrade && apt -y install \
-    apt-utils \
-    aptitude \
-    apt-transport-https \
     build-essential \
     bzip2 \
     curl \
-    gdebi \
     geoip-database \
     git \
     gnupg \
-    htop \
-    libcups2 \
-    libcups2-dev \
     libgeoip1 \
     libxml2-dev \
     libxslt1-dev \
@@ -33,7 +26,6 @@ RUN apt update && apt -y upgrade && apt -y install \
     libldap2-dev \
     libsasl2-dev \
     locales \
-    locate  \
     nano \
     poppler-utils \
     procps \
@@ -75,7 +67,7 @@ RUN dpkg -i /tmp/libssl.deb
 
 RUN wget -O /tmp/wkhtmltox.deb \
     https://nightly.odoo.com/extra/wkhtmltox-0.12.2.1_linux-jessie-amd64.deb
-RUN gdebi -n /tmp/wkhtmltox.deb
+RUN dpkg -i /tmp/wkhtmltox.deb
 RUN cp /usr/local/bin/wkhtmlto* /usr/bin/
 
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main" > /etc/apt/sources.list.d/pgdg.list
@@ -121,6 +113,10 @@ RUN pip install \
     unidecode \
     xlrd \
     xlsxwriter
+RUN apt update && apt -y install cabextract
+RUN wget http://ftp.br.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.6_all.deb \
+    -O /tmp/ttf.deb
+RUN dpkg -i /tmp/ttf.deb
 
 USER odoo
 WORKDIR /var/lib/odoo
@@ -162,15 +158,9 @@ RUN git clone git://github.com/it-projects-llc/mail-addons.git --depth 1 --branc
 RUN git clone git://github.com/it-projects-llc/misc-addons.git --depth 1 --branch 8.0 --single-branch /opt/misc-addons
 RUN git clone git://github.com/efatto/efatto.git --depth 1 --branch 8.0 --single-branch /opt/e-efatto
 RUN git clone git://github.com/efatto/l10n-italy.git --depth 1 --branch 8.0 --single-branch /opt/l10n-italy
-
+RUN git clone git://github.com/aeroo/aeroolib.git --depth 1 --branch py2.x --single-branch /opt/aeroolib
 USER root
-RUN git clone git://github.com/aeroo/aeroolib.git --depth 1 --branch py2.x --single-branch /tmp/aeroolib
-RUN python /tmp/aeroolib/setup.py install
-RUN apt update && apt -y install cabextract
-RUN wget http://ftp.br.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.6_all.deb \
-    -O /tmp/ttf.deb
-RUN dpkg -i /tmp/ttf.deb
-
+RUN python /opt/aeroolib/setup.py install
 USER odoo
 COPY odoo.conf /var/lib/odoo/
 COPY run.sh /run.sh
