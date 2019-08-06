@@ -162,12 +162,16 @@ RUN git clone git://github.com/it-projects-llc/mail-addons.git --depth 1 --branc
 RUN git clone git://github.com/it-projects-llc/misc-addons.git --depth 1 --branch 8.0 --single-branch /opt/misc-addons
 RUN git clone git://github.com/efatto/efatto.git --depth 1 --branch 8.0 --single-branch /opt/e-efatto
 RUN git clone git://github.com/efatto/l10n-italy.git --depth 1 --branch 8.0 --single-branch /opt/l10n-italy
-RUN git clone git://github.com/aeroo/aeroolib.git --depth 1 --branch py2.x --single-branch /opt/aeroolib
-RUN python /opt/aeroolib/setup.py install
-RUN apt -y install cabextract
+
+USER root
+RUN git clone git://github.com/aeroo/aeroolib.git --depth 1 --branch py2.x --single-branch /tmp/aeroolib
+RUN python /tmp/aeroolib/setup.py install
+RUN apt update && apt -y install cabextract
 RUN wget http://ftp.br.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.6_all.deb \
     -O /tmp/ttf.deb
 RUN dpkg -i /tmp/ttf.deb
+
+USER odoo
 COPY odoo.conf /var/lib/odoo/
 COPY run.sh /run.sh
 
