@@ -163,7 +163,7 @@ RUN git clone git://github.com/efatto/efatto.git --depth 1 --branch 8.0 --single
 RUN git clone git://github.com/efatto/l10n-italy.git --depth 1 --branch 8.0 --single-branch /opt/l10n-italy
 RUN git clone git://github.com/aeroo/aeroolib.git --depth 1 --branch py2.x --single-branch /opt/aeroolib
 USER root
-RUN python /opt/aeroolib/setup.py install
+RUN cd /opt/aeroolib && python /opt/aeroolib/setup.py install
 USER odoo
 COPY odoo.conf /var/lib/odoo/
 COPY run.sh /run.sh
