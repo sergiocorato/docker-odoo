@@ -115,7 +115,7 @@ RUN pip install \
     unidecode \
     xlrd \
     xlsxwriter \
-    pycups>=1.9.68
+    pycups
 RUN apt update && apt -y install cabextract
 RUN wget http://ftp.br.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.6_all.deb \
     -O /tmp/ttf.deb
