@@ -19,6 +19,8 @@ RUN apt update && apt -y upgrade && apt -y install \
     geoip-database \
     git \
     gnupg \
+    libcups2 \
+    libcups2-dev \
     libgeoip1 \
     libxml2-dev \
     libxslt1-dev \
