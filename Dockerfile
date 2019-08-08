@@ -76,7 +76,8 @@ RUN apt-get update -y && apt-get upgrade -y \
     python-cairo \
     locate \
     unzip \
-    locales
+    locales \
+    poppler-utils
 RUN echo "it_IT.UTF-8 UTF-8" >> /etc/locale.gen && \
     dpkg-reconfigure --frontend=noninteractive locales && \
     update-locale LANG=it_IT.UTF-8
