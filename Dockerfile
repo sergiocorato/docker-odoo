@@ -71,6 +71,7 @@ RUN pip3 install -r /opt/odoo/requirements.txt
 RUN pip3 install -r /opt/odoo/doc/requirements.txt
 RUN pip3 install /opt/odoo
 RUN pip3 install Unidecode
+RUN pip3 install git+https://github.com/OCA/openupgradelib.git@master
 
 USER odoo
 WORKDIR /var/lib/odoo
