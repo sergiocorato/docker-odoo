@@ -38,10 +38,6 @@ RUN apt update && apt -y upgrade && apt -y install \
     vim \
     wget
 
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
-RUN apt -y install nodejs
-RUN npm install -g less less-plugin-clean-css
-
 RUN curl -L https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.stretch_amd64.deb -o /tmp/wkhtmltopdf.deb
 RUN apt -y install /tmp/wkhtmltopdf.deb
 
