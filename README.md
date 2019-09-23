@@ -1,6 +1,6 @@
-# Odoo 10 Dockerized
+# Odoo 12 Dockerized
 
-This is a dockerized Odoo 10 setup.
+This is a dockerized Odoo 12 setup.
 
 It needs an external container for DB and a single volume for persistent data.
 
@@ -15,7 +15,7 @@ version: "2"
 
 services:
   app:
-    image: kenayagi/odoo:10.0
+    image: kenayagi/odoo:12.0
     restart: unless-stopped
     volumes:
       - /srv/docker/odoo/app/data:/var/lib/odoo
@@ -29,9 +29,6 @@ services:
       - POSTGRES_HOST=db
       - POSTGRES_USER=odoo
       - POSTGRES_PASSWORD=PassWooorD
-      - ODOO_DATADIR=/var/lib/odoo
-      - ODOO_CONF=/var/lib/odoo/odoo.conf
-      - REQ_FILE=/var/lib/odoo/requirements.txt
       - ADMIN_PASSWD=Db4dm1nSup3rS3cr3tP4ssw0rD
     labels:
       - traefik.enable=true
@@ -47,7 +44,7 @@ services:
       - traefik.p.frontend.redirect.entryPoint=https
       
   db:
-    image: postgres:11.3
+    image: postgres:11.5
     restart: unless-stopped
     volumes:
       - /srv/docker/odoo/db/data:/var/lib/postgresql/data
