@@ -11,25 +11,26 @@ If already using [Traefik](https://traefik.io/) and [Docker Compose](https://doc
 
 
 ```
-version: "2"
+version: "2.1"
 
 services:
   app:
     image: kenayagi/odoo:12.0
-    restart: unless-stopped
+    restart: always
     volumes:
-      - /srv/docker/odoo/app/data:/var/lib/odoo
+      - /srv/odoodata/installationid:/var/lib/odoo
     networks:
       - traefik
       - net
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       - TZ=Europe/Rome
-      - POSTGRES_HOST=db
+      - ODOO_ADMIN_PASSWD=Db4dm1nSup3rS3cr3tP4ssw0rD
+      - ODOO_DB=installationid
       - POSTGRES_USER=odoo
       - POSTGRES_PASSWORD=PassWooorD
-      - ADMIN_PASSWD=Db4dm1nSup3rS3cr3tP4ssw0rD
     labels:
       - traefik.enable=true
       - traefik.f.port=8069
@@ -45,16 +46,23 @@ services:
       
   db:
     image: postgres:11.5
-    restart: unless-stopped
+    command: -c "synchronous_commit=off" -c "full_page_writes=off" # Useful when based on ZFS
+    restart: always
     volumes:
-      - /srv/docker/odoo/db/data:/var/lib/postgresql/data
+      - /srv/postgres/installationid:/var/lib/postgresql/data
     networks:
       - net
     environment:
       - TZ=Europe/Rome
+      - ODOO_DB=installationid
       - POSTGRES_USER=odoo
       - POSTGRES_PASSWORD=PassWooorD
-      
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$ODOO_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 networks:
   net:
   traefik:

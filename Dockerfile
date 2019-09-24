@@ -2,13 +2,15 @@ FROM debian:stretch
 
 ARG ODOO_UID=105
 ARG ODOO_GID=109
+ARG ODOO_HOMEDIR=/var/lib/odoo
+ENV ODOO_HOMEDIR=${ODOO_HOMEDIR}
 
-ENV ODOO_DATADIR=/var/lib/odoo
-ENV ODOO_CONF=/var/lib/odoo/odoo.conf
+ENV ODOO_DB=odoodb
+ENV ODOO_CONF_FILE=${ODOO_HOMEDIR}/odoo.conf
+ENV ODOO_UPD_FILE=${ODOO_HOMEDIR}/update.txt
+ENV ODOO_REQ_FILE=${ODOO_HOMEDIR}/requirements.txt
+ENV ODOO_ADMIN_PASSWD=Db4dm1nSup3rS3cr3tP4ssw0rD
 
-ENV UPD_FILE=/var/lib/odoo/update.txt
-ENV REQ_FILE=/var/lib/odoo/requirements.txt
-ENV ADMIN_PASSWD=Db4dm1nSup3rS3cr3tP4ssw0rD
 ENV POSTGRES_HOST=db
 ENV POSTGRES_USER=odoo
 ENV POSTGRES_PASSWORD=Us3rP4ssw0rD
@@ -40,6 +42,7 @@ RUN apt update && apt -y upgrade && apt -y install \
 
 RUN curl -L https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.stretch_amd64.deb -o /tmp/wkhtmltopdf.deb
 RUN apt -y install /tmp/wkhtmltopdf.deb
+RUN rm /tmp/wkhtmltopdf.deb
 
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 RUN curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
@@ -54,7 +57,7 @@ RUN locale-gen
 ENV LANG=it_IT.UTF-8
 
 RUN groupadd -g ${ODOO_GID} odoo
-RUN useradd -m -d /var/lib/odoo -s /bin/bash -u ${ODOO_UID} -g ${ODOO_GID} odoo
+RUN useradd -m -d ${ODOO_HOMEDIR} -s /bin/bash -u ${ODOO_UID} -g ${ODOO_GID} odoo
 RUN mkdir -p /etc/odoo
 RUN chown -R odoo:odoo /etc/odoo /opt
 
@@ -70,13 +73,9 @@ RUN pip3 install Unidecode
 RUN pip3 install git+https://github.com/OCA/openupgradelib.git@master
 
 USER odoo
-WORKDIR /var/lib/odoo
-
-COPY odoo.conf /etc/odoo
-COPY run.sh /run.sh
-
+WORKDIR ${ODOO_HOMEDIR}
 EXPOSE 8069 8071 8072
+VOLUME ${ODOO_HOMEDIR}
 
-VOLUME /var/lib/odoo
-
+COPY run.sh /run.sh
 CMD /bin/bash /run.sh
