@@ -95,7 +95,6 @@ RUN wget https://bootstrap.pypa.io/get-pip.py && python get-pip.py
 RUN pip install --ignore-installed --upgrade \
     mock \
     PyPDF2 \
-    python-telegram-bot \
     codicefiscale \
     MarkupSafe==0.23 \
     Pillow==5.2.0 \
@@ -109,7 +108,7 @@ RUN pip install --ignore-installed --upgrade \
     requests \
     xlrd
 RUN pip install email-validator
-
+#REMOVED python-telegram-bot
 RUN apt-get install -y libzbar0
 RUN pip install pyzbar pyzbar[scripts] qrcode \
     git+https://github.com/ojii/pymaging.git#egg=pymaging \
