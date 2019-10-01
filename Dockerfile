@@ -107,8 +107,8 @@ RUN pip install --ignore-installed --upgrade \
     bs4 \
     phonenumbers \
     requests \
-    xlrd \
-    email-validator
+    xlrd
+RUN pip install email-validator
 
 RUN apt-get install -y libzbar0
 RUN pip install pyzbar pyzbar[scripts] qrcode \
