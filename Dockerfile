@@ -102,6 +102,7 @@ USER root
 RUN pip install --upgrade pip
 RUN pip install -r https://raw.githubusercontent.com/odoo/odoo/8.0/requirements.txt
 RUN pip install \
+    idna==2.5 \
     asn1crypto \
     codicefiscale \
     geojson \
