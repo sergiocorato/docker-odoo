@@ -2,12 +2,15 @@ FROM debian:stretch
 
 ARG ODOO_UID=105
 ARG ODOO_GID=109
+ARG ODOO_HOMEDIR=/var/lib/odoo
+ENV ODOO_HOMEDIR=${ODOO_HOMEDIR}
 
-ENV ODOO_DATADIR=/var/lib/odoo
-ENV ODOO_CONF=/var/lib/odoo/odoo.conf
+ENV ODOO_DB=odoodb
+ENV ODOO_CONF_FILE=${ODOO_HOMEDIR}/odoo.conf
+ENV ODOO_UPD_FILE=${ODOO_HOMEDIR}/update.txt
+ENV ODOO_REQ_FILE=${ODOO_HOMEDIR}/requirements.txt
+ENV ODOO_ADMIN_PASSWD=Db4dm1nSup3rS3cr3tP4ssw0rD
 
-ENV UPD_FILE=/var/lib/odoo/update.txt
-ENV ADMIN_PASSWD=Db4dm1nSup3rS3cr3tP4ssw0rD
 ENV POSTGRES_HOST=db
 ENV POSTGRES_USER=odoo
 ENV POSTGRES_PASSWORD=Us3rP4ssw0rD
@@ -164,12 +167,12 @@ RUN git clone git://github.com/efatto/l10n-italy.git --depth 1 --branch 8.0 --si
 RUN git clone git://github.com/aeroo/aeroolib.git --depth 1 --branch py2.x --single-branch /opt/aeroolib
 USER root
 RUN cd /opt/aeroolib && python /opt/aeroolib/setup.py install
+
 USER odoo
+WORKDIR ${ODOO_HOMEDIR}
+EXPOSE 8069 8071 8072
+VOLUME ${ODOO_HOMEDIR}
+
 COPY odoo.conf /var/lib/odoo/
 COPY run.sh /run.sh
-
-EXPOSE 8069 8071 8072
-
-VOLUME /var/lib/odoo
-
 CMD /bin/bash /run.sh
