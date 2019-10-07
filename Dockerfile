@@ -1,7 +1,7 @@
 FROM debian:jessie
 
-ARG ODOO_UID=115
-ARG ODOO_GID=119
+ARG ODOO_UID=105
+ARG ODOO_GID=109
 
 ENV ODOO_DATADIR=/var/lib/odoo
 ENV ODOO_CONF=/var/lib/odoo/odoo.conf
@@ -52,13 +52,10 @@ RUN apt-get update -y && apt-get upgrade -y \
     xfonts-base \
     xfonts-75dpi \
     python-dev \
-    psmisc \
     python-genshi \
     python-cairo \
-    locate \
     unzip \
     locales \
-    poppler-utils \
     python-uno
 RUN echo "it_IT.UTF-8 UTF-8" >> /etc/locale.gen && \
     dpkg-reconfigure --frontend=noninteractive locales && \
@@ -88,7 +85,7 @@ RUN pip install --ignore-installed --upgrade \
     pybarcode \
     bs4 \
     phonenumbers \
-    requests \
+    requests==2.9.1 \
     xlrd \
     email-validator
 
