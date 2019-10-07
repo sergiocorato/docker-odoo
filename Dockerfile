@@ -1,7 +1,7 @@
-FROM debian:wheezy
+FROM debian:jessie
 
-ARG ODOO_UID=105
-ARG ODOO_GID=109
+ARG ODOO_UID=115
+ARG ODOO_GID=119
 
 ENV ODOO_DATADIR=/var/lib/odoo
 ENV ODOO_CONF=/var/lib/odoo/odoo.conf
@@ -14,25 +14,6 @@ ENV POSTGRES_PASSWORD=Us3rP4ssw0rD
 ENV DEBIAN_FRONTEND noninteractive
 ENV PYTHONIOENCODING utf-8
 
-RUN cp /etc/apt/sources.list /etc/apt/sources.list.back
-RUN sed -i 's/deb http:\/\/security.debian.org.*/#NO/g' /etc/apt/sources.list
-RUN sed -i 's/deb-src http:\/\/security.debian.org.*/#NO/g' /etc/apt/sources.list
-RUN sed -i 's/deb http:\/\/deb.debian.org.*/#NO/g' /etc/apt/sources.list
-RUN sed -i 's/deb-src http:\/\/deb.debian.org.*/#NO/g' /etc/apt/sources.list
-RUN apt-get update
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/
-RUN echo "deb http://archive.debian.org/debian wheezy-backports main" >> \
- /etc/apt/sources.list
-RUN echo "deb-src http://archive.debian.org/debian wheezy-backports main" >> \
- /etc/apt/sources.list
-RUN echo "deb http://archive.debian.org/debian-security wheezy updates/main" >> \
- /etc/apt/sources.list
-RUN echo "deb-src http://archive.debian.org/debian-security wheezy updates/main" >> \
- /etc/apt/sources.list
-RUN echo "deb http://archive.debian.org/debian wheezy main" >> \
- /etc/apt/sources.list
-RUN echo "deb-src http://archive.debian.org/debian wheezy main" >> \
- /etc/apt/sources.list
 RUN apt-get update -y && apt-get upgrade -y \
     && apt-get install --allow-unauthenticated -y \
     python-dateutil \
@@ -83,10 +64,10 @@ RUN echo "it_IT.UTF-8 UTF-8" >> /etc/locale.gen && \
     update-locale LANG=it_IT.UTF-8
 ENV LANG=it_IT.UTF-8
 ENV LANGUAGE=it
-RUN cd /tmp && wget -O wkhtmltox-0.12.2.1_linux-wheezy-amd64.deb \
+RUN cd /tmp && wget -O wkhtmltox-0.12.2.1_linux-jessie-amd64.deb \
     https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.2.1/\
-wkhtmltox-0.12.2.1_linux-wheezy-amd64.deb \
-    && dpkg -i wkhtmltox-0.12.2.1_linux-wheezy-amd64.deb \
+wkhtmltox-0.12.2.1_linux-jessie-amd64.deb \
+    && dpkg -i wkhtmltox-0.12.2.1_linux-jessie-amd64.deb \
     && cp /usr/local/bin/wkhtmltopdf /usr/bin \
     && cp /usr/local/bin/wkhtmltoimage /usr/bin
 
@@ -95,6 +76,7 @@ RUN wget https://bootstrap.pypa.io/get-pip.py && python get-pip.py
 RUN pip install --ignore-installed --upgrade \
     mock \
     PyPDF2 \
+    python-telegram-bot==5.3.1 \
     codicefiscale \
     MarkupSafe==0.23 \
     Pillow==5.2.0 \
@@ -106,9 +88,9 @@ RUN pip install --ignore-installed --upgrade \
     bs4 \
     phonenumbers \
     requests \
-    xlrd
-RUN pip install email-validator
-#REMOVED python-telegram-bot
+    xlrd \
+    email-validator
+
 RUN apt-get install -y libzbar0
 RUN pip install pyzbar pyzbar[scripts] qrcode \
     git+https://github.com/ojii/pymaging.git#egg=pymaging \
@@ -120,7 +102,7 @@ RUN mkdir -p /opt/openerp
 RUN chown -R openerp:openerp /opt
 
 RUN apt-get update -y && apt-get upgrade -y
-RUN apt-get -y --force-yes --no-install-recommends -t wheezy-backports install \
+RUN apt-get -y --force-yes --no-install-recommends install \
     libreoffice '^libreoffice-.*-it$'
 RUN rm /usr/bin/soffice && cd /usr/bin && ln -s \
     ../lib/libreoffice/program/soffice.bin ./soffice
