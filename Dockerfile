@@ -1,7 +1,7 @@
 FROM debian:jessie
 
-ARG ODOO_UID=105
-ARG ODOO_GID=109
+ARG ODOO_UID=3328
+ARG ODOO_GID=3328
 
 ENV ODOO_DATADIR=/var/lib/odoo
 ENV ODOO_CONF=/var/lib/odoo/odoo.conf
