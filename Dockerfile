@@ -58,7 +58,8 @@ RUN apt-get update -y && apt-get upgrade -y \
     locate \
     unzip \
     locales \
-    poppler-utils
+    poppler-utils \
+    python-uno
 RUN echo "it_IT.UTF-8 UTF-8" >> /etc/locale.gen && \
     dpkg-reconfigure --frontend=noninteractive locales && \
     update-locale LANG=it_IT.UTF-8
