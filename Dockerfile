@@ -136,7 +136,7 @@ RUN git clone git://github.com/OCA/account-invoice-reporting.git --depth 1 --bra
 RUN git clone git://github.com/OCA/account-invoicing.git --depth 1 --branch 8.0 --single-branch /opt/account-invoicing
 RUN git clone git://github.com/OCA/account-payment.git --depth 1 --branch 8.0 --single-branch /opt/account-payment
 RUN git clone git://github.com/OCA/bank-payment.git --depth 1 --branch 8.0 --single-branch /opt/bank-payment
-RUN git clone git://github.com/OCA/commission.git --depth 1 --branch 8.0 --single-branch /opt/commission
+RUN git clone git://github.com/sergiocorato/commission.git --depth 1 --branch 8.0 --single-branch /opt/commission
 RUN git clone git://github.com/OCA/crm.git --depth 1 --branch 8.0 --single-branch /opt/crm
 RUN git clone git://github.com/OCA/hr.git --depth 1 --branch 8.0 --single-branch /opt/hr
 RUN git clone git://github.com/OCA/hr-timesheet.git --depth 1 --branch 8.0 --single-branch /opt/hr-timesheet
