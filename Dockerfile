@@ -162,8 +162,6 @@ RUN git clone git://github.com/OCA/web.git --depth 1 --branch 8.0 --single-branc
 RUN git clone git://github.com/sergiocorato/aeroo_reports.git --depth 1 --branch fix_logger --single-branch /opt/aeroo_reports
 RUN git clone git://github.com/it-projects-llc/mail-addons.git --depth 1 --branch 8.0 --single-branch /opt/mail-addons
 RUN git clone git://github.com/it-projects-llc/misc-addons.git --depth 1 --branch 8.0 --single-branch /opt/misc-addons
-RUN git clone git://github.com/efatto/efatto.git --depth 1 --branch 8.0 --single-branch /opt/e-efatto
-RUN git clone git://github.com/efatto/l10n-italy.git --depth 1 --branch 8.0 --single-branch /opt/l10n-italy
 RUN git clone git://github.com/aeroo/aeroolib.git --depth 1 --branch py2.x --single-branch /opt/aeroolib
 USER root
 RUN cd /opt/aeroolib && python /opt/aeroolib/setup.py install
