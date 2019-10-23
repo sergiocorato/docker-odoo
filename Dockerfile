@@ -104,6 +104,7 @@ RUN pip install -r https://raw.githubusercontent.com/odoo/odoo/8.0/requirements.
 RUN pip install \
     asn1crypto \
     codicefiscale \
+    email_validator \
     geojson \
     googlemaps==3.0.2 \
     num2words \
