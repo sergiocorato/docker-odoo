@@ -67,7 +67,7 @@ RUN wget http://ftp.fr.debian.org/debian/pool/main/libp/libpng/\
 libpng12-0_1.2.50-2+deb8u3_amd64.deb -O /tmp/libpng.deb
 RUN dpkg -i /tmp/libpng.deb
 RUN wget http://security.debian.org/debian-security/pool/updates/main/o/\
-openssl/libssl1.0.0_1.0.1t-1+deb8u11_amd64.deb -O /tmp/libssl.deb
+openssl/libssl1.0.0_1.0.1t-1+deb8u12_amd64.deb -O /tmp/libssl.deb
 RUN dpkg -i /tmp/libssl.deb
 
 RUN wget -O /tmp/wkhtmltox.deb \
