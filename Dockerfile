@@ -154,7 +154,7 @@ RUN git clone git://github.com/OCA/purchase-workflow.git --depth 1 --branch 8.0 
 RUN git clone git://github.com/OCA/reporting-engine.git --depth 1 --branch 8.0 --single-branch /opt/reporting-engine
 RUN git clone git://github.com/OCA/report-print-send.git --depth 1 --branch 8.0 --single-branch /opt/report-print-send
 RUN git clone git://github.com/OCA/sale-reporting.git --depth 1 --branch 8.0 --single-branch /opt/sale-reporting
-RUN git clone git://github.com/efatto/sale-workflow.git --depth 1 --branch 8.0-fix_sale_rental_move_in_missing --single-branch /opt/sale-workflow
+RUN git clone git://github.com/sergiocorato/sale-workflow.git --depth 1 --branch 8.0 --single-branch /opt/sale-workflow
 RUN git clone git://github.com/OCA/server-tools.git --depth 1 --branch 8.0 --single-branch /opt/server-tools
 RUN git clone git://github.com/OCA/social.git --depth 1 --branch 8.0 --single-branch /opt/social
 RUN git clone git://github.com/OCA/stock-logistics-warehouse.git --depth 1 --branch 8.0 --single-branch /opt/stock-logistics-warehouse
