@@ -114,8 +114,7 @@ RUN cd /opt/openerp/ && \
     git clone https://github.com/efatto/server.git server --single-branch -b master && \
     git clone https://github.com/efatto/addons.git addons --single-branch -b master && \
     git clone https://github.com/efatto/web.git web --single-branch -b master && \
-    git clone https://github.com/efatto/lp.git lp --single-branch -b master && \
-    git clone https://github.com/efatto/l10n-italy.git l10n-italy --single-branch -b 7.0_imp_sr_fatturapa
+    git clone https://github.com/efatto/lp.git lp --single-branch -b master
 
 COPY odoo.conf /var/lib/odoo/
 COPY run.sh /run.sh
