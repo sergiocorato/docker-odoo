@@ -63,17 +63,9 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
 RUN apt -y install nodejs
 RUN npm install -g less less-plugin-clean-css
 
-RUN wget http://ftp.fr.debian.org/debian/pool/main/libp/libpng/\
-libpng12-0_1.2.50-2+deb8u3_amd64.deb -O /tmp/libpng.deb
-RUN dpkg -i /tmp/libpng.deb
-RUN wget http://security.debian.org/debian-security/pool/updates/main/o/\
-openssl/libssl1.0.0_1.0.1t-1+deb8u12_amd64.deb -O /tmp/libssl.deb
-RUN dpkg -i /tmp/libssl.deb
-
-RUN wget -O /tmp/wkhtmltox.deb \
-    https://nightly.odoo.com/extra/wkhtmltox-0.12.2.1_linux-jessie-amd64.deb
-RUN dpkg -i /tmp/wkhtmltox.deb
-RUN cp /usr/local/bin/wkhtmlto* /usr/bin/
+RUN wget -O /tmp/wkhtmltox.deb https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.stretch_amd64.deb
+RUN apt -y install /tmp/wkhtmltox.deb
+RUN rm /tmp/wkhtmltopdf.deb
 
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 RUN curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
