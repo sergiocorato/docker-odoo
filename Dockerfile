@@ -118,7 +118,8 @@ RUN pip install \
     unidecode \
     xlrd \
     xlsxwriter \
-    pycups
+    pycups \
+    pdfkit
 RUN pip install git+https://github.com/OCA/openupgradelib.git@master
 RUN apt update && apt -y install cabextract
 RUN wget http://ftp.br.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.6_all.deb \
