@@ -76,6 +76,8 @@ RUN pip3 install -r /opt/odoo/doc/requirements.txt
 RUN pip3 install /opt/odoo
 RUN pip3 install Unidecode
 RUN pip3 install git+https://github.com/OCA/openupgradelib.git@master
+RUN pip3 install odoorpc
+RUN pip3 install phonenumbers
 
 USER odoo
 WORKDIR ${ODOO_HOMEDIR}
