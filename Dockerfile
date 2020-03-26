@@ -110,7 +110,8 @@ RUN pip install \
     unidecode \
     xlrd \
     xlsxwriter \
-    pycups
+    pycups \
+    odoorpc
 
 # install utility for afe-connector
 RUN pip install pdfkit
