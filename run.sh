@@ -19,5 +19,10 @@ if [ -f "$ODOO_UPD_FILE" ]; then
     mv $ODOO_UPD_FILE $ODOO_HOMEDIR/setup/odoo-modules-updated-on-`date +%y%m%d`-at-`date +%H%M%S`.txt
 fi
 
+if [ -f "$ODOO_SHELL_FILE" ]; then
+    /usr/local/bin/odoo shell --data-dir=$ODOO_HOMEDIR/data_dir --config=$ODOO_CONF_FILE --database=$ODOO_DB --db_host=$POSTGRES_HOST --db_user=$POSTGRES_USER --db_password=$POSTGRES_PASSWORD \
+    --workers=0
+fi
+
 /usr/local/bin/odoo --data-dir=$ODOO_HOMEDIR/data_dir --config=$ODOO_CONF_FILE --database=$ODOO_DB --db_host=$POSTGRES_HOST --db_user=$POSTGRES_USER --db_password=$POSTGRES_PASSWORD \
 --geoip-db=/usr/share/GeoIP/GeoIP.dat --without-demo=ALL
