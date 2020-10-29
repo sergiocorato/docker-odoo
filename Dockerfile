@@ -24,7 +24,6 @@ RUN apt-get update -y && apt-get upgrade -y \
     python-lxml \
     python-mako \
     python-openid \
-    python-psycopg2 \
     python-pybabel \
     python-pychart \
     python-pydot \
@@ -87,7 +86,8 @@ RUN pip install --ignore-installed --upgrade \
     phonenumbers \
     requests==2.9.1 \
     xlrd \
-    email-validator
+    email-validator \
+    psycopg2==2.4.4
 
 RUN apt-get install -y libzbar0
 RUN pip install pyzbar pyzbar[scripts] qrcode \
