@@ -24,6 +24,7 @@ RUN apt-get update -y && apt-get upgrade -y \
     python-lxml \
     python-mako \
     python-openid \
+    python-psycopg2 \
     python-pybabel \
     python-pychart \
     python-pydot \
@@ -50,9 +51,6 @@ RUN apt-get update -y && apt-get upgrade -y \
     fontconfig \
     xfonts-base \
     xfonts-75dpi \
-    build-essential \
-    libffi-dev \
-    libpq-dev \
     python-dev \
     python-genshi \
     python-cairo \
@@ -89,14 +87,12 @@ RUN pip install --ignore-installed --upgrade \
     phonenumbers \
     requests==2.9.1 \
     xlrd \
-    email-validator \
-    psycopg2==2.4.4
+    email-validator
 
 RUN apt-get install -y libzbar0
 RUN pip install pyzbar pyzbar[scripts] qrcode \
     git+https://github.com/ojii/pymaging.git#egg=pymaging \
     git+https://github.com/ojii/pymaging-png.git#egg=pymaging-png
-RUN pip install --no-cache-dir git+https://github.com/OCA/openupgradelib.git@master
 
 RUN groupadd -g ${ODOO_GID} openerp
 RUN useradd -m -d /var/lib/odoo -s /bin/bash -u ${ODOO_UID} -g ${ODOO_GID} openerp
