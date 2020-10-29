@@ -80,7 +80,7 @@ RUN pip install --ignore-installed --upgrade \
     Pillow==5.2.0 \
     pyyaml==3.10 \
     unidecode==0.04.13 \
-    pyxb==1.2.5 \
+    pyxb==1.2.6 \
     odfpy==0.9.6 \
     pybarcode \
     bs4 \
