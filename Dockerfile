@@ -93,6 +93,7 @@ RUN apt-get install -y libzbar0
 RUN pip install pyzbar pyzbar[scripts] qrcode \
     git+https://github.com/ojii/pymaging.git#egg=pymaging \
     git+https://github.com/ojii/pymaging-png.git#egg=pymaging-png
+RUN pip install --no-cache-dir git+https://github.com/OCA/openupgradelib.git@master
 
 RUN groupadd -g ${ODOO_GID} openerp
 RUN useradd -m -d /var/lib/odoo -s /bin/bash -u ${ODOO_UID} -g ${ODOO_GID} openerp
