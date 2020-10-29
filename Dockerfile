@@ -50,6 +50,9 @@ RUN apt-get update -y && apt-get upgrade -y \
     fontconfig \
     xfonts-base \
     xfonts-75dpi \
+    build-essential \
+    libffi-dev \
+    libpq-dev \
     python-dev \
     python-genshi \
     python-cairo \
