@@ -118,7 +118,7 @@ RUN pip install \
     unidecode \
     xlrd \
     xlsxwriter \
-    pycups
+    pycups==1.9.74
 
 # install utility for afe-connector
 RUN pip install pdfkit
