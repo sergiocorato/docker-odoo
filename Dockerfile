@@ -71,7 +71,7 @@ openssl/libssl1.0.0_1.0.1t-1+deb8u12_amd64.deb -O /tmp/libssl.deb
 RUN dpkg -i /tmp/libssl.deb
 
 RUN wget -O /tmp/wkhtmltox.deb \
-    https://nightly.odoo.com/extra/wkhtmltox-0.12.2.1_linux-jessie-amd64.deb
+    http://nightly.odoo.com/deb/jessie/wkhtmltox-0.12.2.1_linux-jessie-amd64.deb
 RUN dpkg -i /tmp/wkhtmltox.deb
 RUN cp /usr/local/bin/wkhtmlto* /usr/bin/
 
