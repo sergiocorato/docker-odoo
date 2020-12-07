@@ -104,7 +104,7 @@ RUN pip install \
     pstats_print2list \
     PyPDF2 \
     pysftp \
-    pyxb==1.2.5 \
+    pyxb==1.2.6 \
     Shapely \
     unicodecsv \
     unidecode \
