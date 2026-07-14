@@ -15,6 +15,7 @@ else
     echo "Installing explicit dependencies from $ODOO_EXPLICIT_REQ_FILE..."
 
     uv_install \
+        --reinstall \
         --index-strategy unsafe-best-match \
         -r "$ODOO_EXPLICIT_REQ_FILE"
 
