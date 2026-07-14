@@ -31,7 +31,6 @@ if [ ! -f "$ODOO_REQ_FILE" ]; then
     echo "No requirements file, skipping deps update."
 else
     echo "Updating requirements..."
-    uv_install setuptools wheel build setuptools-odoo
     uv_install --reinstall --index-strategy unsafe-best-match -r "$ODOO_REQ_FILE"
 
     NOW="$(date +%y%m%d_%H%M%S)"
